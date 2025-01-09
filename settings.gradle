@@ -1,0 +1,12 @@
+rootProject.name = 'msa_borad'
+
+include 'service'
+include 'common'
+
+include 'service:article'
+include 'service:comment'
+include 'service:article-read'
+include 'service:hot-article'
+include 'service:like'
+include 'service:view'
+
