@@ -6,6 +6,7 @@ import dding.board.article.exceptions.NotFoundArticleById;
 import dding.board.article.repository.ArticleRepository;
 import dding.board.article.service.request.ArticleCreateRequest;
 import dding.board.article.service.request.ArticleUpdateRequest;
+import dding.board.article.service.response.ArticlePageResponse;
 import dding.board.article.service.response.ArticleResponse;
 import dding.board.common.snowflake.Snowflake;
 import jakarta.transaction.Transactional;
@@ -53,7 +54,19 @@ public class ArticleService {
     public void delete(Long articleId)
     {
         articleRepository.deleteById(articleId);
+    }
 
+    public ArticlePageResponse readAll(Long boardId, Long page, Long pageSize)
+    {
+        return ArticlePageResponse.of(
+                articleRepository.findAll(boardId, (page -1) * pageSize, pageSize).stream()
+                        .map(ArticleResponse::form)
+                        .toList(),
+                articleRepository.count(
+                        boardId,
+                        PageLimitCalculator.calculator(page,pageSize,10L)
+                )
+        );
     }
 
 }
