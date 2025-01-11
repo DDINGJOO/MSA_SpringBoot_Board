@@ -4,6 +4,7 @@ package dding.board.article.controller;
 import dding.board.article.service.ArticleService;
 import dding.board.article.service.request.ArticleCreateRequest;
 import dding.board.article.service.request.ArticleUpdateRequest;
+import dding.board.article.service.response.ArticlePageResponse;
 import dding.board.article.service.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,15 @@ public class ArticleController {
     public ArticleResponse reade(@PathVariable Long articleId)
     {
         return articleService.read(articleId);
+    }
+
+    @GetMapping("/v1/artucles")
+    public ArticlePageResponse readAll(
+            @RequestParam("boardId") Long boardId,
+            @RequestParam("page") Long page,
+            @RequestParam("pageSize") Long pageSize
+    ){
+        return articleService.readAll(boardId,page,pageSize);
     }
 
     @PostMapping("/v1/articles")
