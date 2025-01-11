@@ -20,11 +20,11 @@ public class ArticleController {
         return articleService.read(articleId);
     }
 
-    @GetMapping("/v1/artucles")
+    @GetMapping("/v1/articles")
     public ArticlePageResponse readAll(
             @RequestParam("boardId") Long boardId,
-            @RequestParam("page") Long page,
-            @RequestParam("pageSize") Long pageSize
+            @RequestParam("pageSize") Long pageSize,
+            @RequestParam("page") Long page
     ){
         return articleService.readAll(boardId,page,pageSize);
     }
