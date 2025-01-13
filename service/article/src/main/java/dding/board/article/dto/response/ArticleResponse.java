@@ -1,4 +1,4 @@
-package dding.board.article.service.response;
+package dding.board.article.dto.response;
 
 
 import dding.board.article.entity.Article;

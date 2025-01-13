@@ -1,7 +1,7 @@
 package dding.board.article.api;
 
-import dding.board.article.service.response.ArticlePageResponse;
-import dding.board.article.service.response.ArticleResponse;
+import dding.board.article.dto.response.ArticlePageResponse;
+import dding.board.article.dto.response.ArticleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
@@ -12,7 +12,7 @@ import static java.lang.module.ModuleDescriptor.read;
 
 public class ArticleApiTest {
    RestClient restClient = RestClient.create("http://localhost:9000");
-   ArticleResponse factoryArticle = create(new ArticleCreateRequest("Title","Content",1L,1L));
+
 
 
     @Test
@@ -34,7 +34,7 @@ public class ArticleApiTest {
 
     @Test
     void readTest() {
-        ArticleResponse response = read(factoryArticle.getArticleId());
+        ArticleResponse response = read(FactoryArticle().getArticleId());
         System.out.println("response = " + response);
     }
 
@@ -49,7 +49,7 @@ public class ArticleApiTest {
     void readAllTest()
     {
         ArticlePageResponse response = restClient.get()
-                .uri("/v1/articles?boardId=1&pageSize=30&page=3000")
+                .uri("/v1/articles?boardId=1&pageSize=30&page=100")
                 .retrieve()
                 .body(ArticlePageResponse.class);
 
@@ -65,10 +65,10 @@ public class ArticleApiTest {
     @Test
     void updateTest()
     {
+        ArticleResponse factoryArticle = FactoryArticle();
         System.out.println("before = " + factoryArticle);
         var before = factoryArticle.getModifiedAt();
         factoryArticle = update(factoryArticle.getArticleId(), new ArticleUpdateRequest("hi2", "hihi2"));
-
         System.out.println("response = "+ factoryArticle);
         Assertions.assertThat(factoryArticle.getModifiedAt()).isAfter(before);
     }
@@ -84,6 +84,7 @@ public class ArticleApiTest {
     @Test
     void deleteTest()
     {
+        ArticleResponse factoryArticle = FactoryArticle();
         restClient.delete()
                 .uri("v1/articles/{articleId}", factoryArticle.getArticleId())
                 .retrieve();
@@ -111,6 +112,11 @@ public class ArticleApiTest {
     static class ArticleUpdateRequest {
         private String title;
         private String content;
+    }
+
+    ArticleResponse FactoryArticle()
+    {
+        return create(new ArticleCreateRequest("Title","Content",1L,1L));
     }
 
 

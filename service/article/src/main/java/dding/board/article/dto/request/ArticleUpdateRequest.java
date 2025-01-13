@@ -1,4 +1,4 @@
-package dding.board.article.service.request;
+package dding.board.article.dto.request;
 
 
 import lombok.Getter;

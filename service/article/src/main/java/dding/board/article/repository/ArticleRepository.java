@@ -30,6 +30,23 @@ public interface ArticleRepository  extends JpaRepository<Article, Long> {
     );
 
 
+
+    @Query(
+            value = "SELECT article.article_id,article.title,article.wrtier_id" +
+                    "FROM article" +
+                    "WHERE board_id = 1" +
+                    "  AND article_id < :article_id" +
+                    "ORDER BY article_id DESC" +
+                    "limit :limit",
+            nativeQuery = true
+    )
+    List<Article> nearArticle(
+            @Param("articl_id") Long article_id,
+            @Param("limit") Long limit
+    );
+
+
+
     @Query(
             value = "select  count(*) from(" +
                     "select article_id from article where board_id = :boardId limit :limit" +
@@ -38,4 +55,8 @@ public interface ArticleRepository  extends JpaRepository<Article, Long> {
 
     )
     Long count(@Param("boardId") Long boardId, @Param("limit") Long limit);
+
+
+
+
 }

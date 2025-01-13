@@ -4,11 +4,11 @@ package dding.board.article.service;
 import dding.board.article.entity.Article;
 import dding.board.article.exceptions.NotFoundArticleById;
 import dding.board.article.repository.ArticleRepository;
-import dding.board.article.service.request.ArticleCreateRequest;
-import dding.board.article.service.request.ArticleUpdateRequest;
-import dding.board.article.service.response.ArticlePageResponse;
-import dding.board.article.service.response.ArticleResponse;
-import dding.board.common.snowflake.Snowflake;
+import dding.board.article.dto.request.ArticleCreateRequest;
+import dding.board.article.dto.request.ArticleUpdateRequest;
+import dding.board.article.dto.response.ArticlePageResponse;
+import dding.board.article.dto.response.ArticleResponse;
+import dding.board.article.util.PrimaryKeyProvider.SnowFlakeKeyProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final Snowflake snowflake = new Snowflake();
+    private final PrimaryKeyProvider primaryKeyProvider = new SnowFlakeKeyProvider();
     private final ArticleRepository articleRepository;
 
 
@@ -26,7 +26,7 @@ public class ArticleService {
     {
         Article article = articleRepository.save(
                 Article.create(
-                        snowflake.nextId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
+                        primaryKeyProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
         );
 
         return ArticleResponse.form(article);
@@ -43,18 +43,12 @@ public class ArticleService {
     }
 
 
+
     public ArticleResponse read( Long articleId)
     {
         return ArticleResponse.form(articleRepository.findById(articleId).orElseThrow(NotFoundArticleById::new));
     }
 
-
-
-    @Transactional
-    public void delete(Long articleId)
-    {
-        articleRepository.deleteById(articleId);
-    }
 
     public ArticlePageResponse readAll(Long boardId, Long page, Long pageSize)
     {
@@ -67,6 +61,15 @@ public class ArticleService {
                         PageLimitCalculator.calculator(page,pageSize,10L)
                 )
         );
+    }
+
+
+
+
+    @Transactional
+    public void delete(Long articleId)
+    {
+        articleRepository.deleteById(articleId);
     }
 
 }
