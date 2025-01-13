@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
@@ -61,6 +63,19 @@ public class ArticleService {
                         PageLimitCalculator.calculator(page,pageSize,10L)
                 )
         );
+    }
+
+
+
+
+    public List<ArticleResponse> readAllInfiniteScroll(Long boardId , Long pageSize, Long lastArticleId)
+    {
+        List<Article> articles = lastArticleId == null?
+                articleRepository.findAllInfiniteScroll(boardId,pageSize):
+                articleRepository.findAllInfiniteScroll(boardId, pageSize, lastArticleId);
+        return articles.stream()
+                .map(ArticleResponse :: form)
+                .toList();
     }
 
 

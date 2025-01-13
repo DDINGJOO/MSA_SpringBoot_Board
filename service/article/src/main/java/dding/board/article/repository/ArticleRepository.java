@@ -30,21 +30,29 @@ public interface ArticleRepository  extends JpaRepository<Article, Long> {
     );
 
 
-
     @Query(
-            value = "SELECT article.article_id,article.title,article.wrtier_id" +
-                    "FROM article" +
-                    "WHERE board_id = 1" +
-                    "  AND article_id < :article_id" +
-                    "ORDER BY article_id DESC" +
-                    "limit :limit",
+            value = "SELECT * FROM article " +
+                    "WHERE board_id = :boardId " +
+                    "ORDER BY article_id DESC limit :limit",
             nativeQuery = true
     )
-    List<Article> nearArticle(
-            @Param("articl_id") Long article_id,
+    List<Article> findAllInfiniteScroll(
+            @Param("boardId") Long boardId,
             @Param("limit") Long limit
     );
 
+
+    @Query(
+            value = "SELECT * FROM article " +
+                    "WHERE board_id = :boardId  and article_id < :lastArticleId " +
+                    "ORDER BY article_id DESC limit :limit",
+            nativeQuery = true
+    )
+    List<Article> findAllInfiniteScroll(
+            @Param("boardId") Long boardId,
+            @Param("limit") Long limit,
+            @Param("lastArticleId") Long lastArticleId
+    );
 
 
     @Query(
