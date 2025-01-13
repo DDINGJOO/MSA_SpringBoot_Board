@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 import static java.lang.module.ModuleDescriptor.read;
 
@@ -60,6 +63,72 @@ public class ArticleApiTest {
         }
     }
 
+    @Test
+    void readAllInfiniteScrollInitPageTest() {
+        var article1 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+
+        System.out.println("firstPage");
+        for (ArticleResponse articleResponse : article1) {
+            System.out.println("articleResponse.getArticleId() = " + articleResponse.getArticleId());
+        }
+    }
+
+    @Test
+    void readAllInfiniteScrollNextPageTest()
+    {
+        var article1 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+
+        var lastArticleId = article1.getLast().getArticleId();
+        System.out.printf("lastArticleId = %s%n", lastArticleId);
+        var article2 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId))
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+
+        System.out.println("SecondPage");
+        for(ArticleResponse articleResponse : article2)
+        {
+            System.out.println("articleResponse.getArticleId() = " + articleResponse.getArticleId());
+        }
+
+    }
+
+    @Test
+    void readAllInfiniteScrollContinueousTest()
+    {
+        var article1 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+
+        var lastArticleId1 = article1.getLast().getArticleId();
+        System.out.printf("lastArticleId = %s%n", lastArticleId1);
+        var article2 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=8")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+
+        var lastArticleId2 = article2.getLast().getArticleId();
+        System.out.printf("nextArticleId = %s%n", lastArticleId2);
+
+        var article3 = restClient.get()
+                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId1))
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+                });
+        Assertions.assertThat(lastArticleId2).isEqualTo(article3.getFirst().getArticleId());
+    }
 
 
     @Test
