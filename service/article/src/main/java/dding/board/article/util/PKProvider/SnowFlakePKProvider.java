@@ -1,9 +1,9 @@
-package dding.board.article.util.PrimaryKeyProvider;
+package dding.board.article.util.PKProvider;
 
-import dding.board.article.service.PrimaryKeyProvider;
+import dding.board.article.service.PKProvider;
 import dding.board.common.snowflake.Snowflake;
 
-public class SnowFlakeKeyProvider implements PrimaryKeyProvider {
+public class SnowFlakePKProvider implements PKProvider {
     private final Snowflake snowflake = new Snowflake();
     @Override
     public Long getId() {

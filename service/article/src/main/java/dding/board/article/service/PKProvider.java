@@ -1,5 +1,5 @@
 package dding.board.article.service;
 
-public interface PrimaryKeyProvider {
+public interface PKProvider {
     Long getId();
 }

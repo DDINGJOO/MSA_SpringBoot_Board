@@ -8,7 +8,7 @@ import dding.board.article.dto.request.ArticleCreateRequest;
 import dding.board.article.dto.request.ArticleUpdateRequest;
 import dding.board.article.dto.response.ArticlePageResponse;
 import dding.board.article.dto.response.ArticleResponse;
-import dding.board.article.util.PrimaryKeyProvider.SnowFlakeKeyProvider;
+import dding.board.article.util.PKProvider.SnowFlakePKProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final PrimaryKeyProvider primaryKeyProvider = new SnowFlakeKeyProvider();
+    private final PKProvider PKProvider = new SnowFlakePKProvider();
     private final ArticleRepository articleRepository;
 
 
@@ -28,7 +28,7 @@ public class ArticleService {
     {
         Article article = articleRepository.save(
                 Article.create(
-                        primaryKeyProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
+                        PKProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
         );
 
         return ArticleResponse.form(article);

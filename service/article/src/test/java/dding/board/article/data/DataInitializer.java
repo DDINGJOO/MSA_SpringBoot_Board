@@ -1,8 +1,8 @@
 package dding.board.article.data;
 
 import dding.board.article.entity.Article;
-import dding.board.article.service.PrimaryKeyProvider;
-import dding.board.article.util.PrimaryKeyProvider.SnowFlakeKeyProvider;
+import dding.board.article.service.PKProvider;
+import dding.board.article.util.PKProvider.SnowFlakePKProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class DataInitializer {
     EntityManager entityManager;
     @Autowired
     TransactionTemplate transactionTemplate;
-    PrimaryKeyProvider primaryKeyProvider = new SnowFlakeKeyProvider();
+    PKProvider PKProvider = new SnowFlakePKProvider();
     CountDownLatch latch = new CountDownLatch(EXECUTE_COUNT);
 
     static final int BULK_INSERT_SIZE = 2000;
@@ -45,7 +45,7 @@ public class DataInitializer {
         transactionTemplate.executeWithoutResult(status -> {
             for(int i = 0; i < BULK_INSERT_SIZE; i++) {
                 Article article = Article.create(
-                        primaryKeyProvider.getId(),
+                        PKProvider.getId(),
                         "title" + i,
                         "content" + i,
                         1L,
