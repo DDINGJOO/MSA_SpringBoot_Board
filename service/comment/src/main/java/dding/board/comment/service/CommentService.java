@@ -59,7 +59,32 @@ public class CommentService {
     @Transactional
     public void delete(Long commentId)
     {
-        commentRepository.delete(commentRepository.findById(commentId).orElseThrow());
+        commentRepository.findById(commentId)
+                .filter(not(Comment ::getDeleted))
+                .ifPresent(comment -> {
+                    if(hasChildren(comment))
+                    {
+                        comment.delete();
+                    } else
+                    {
+                        delete(comment);
+                    }
+                });
+    }
+
+    private boolean hasChildren(Comment comment) {
+        return commentRepository.countBy(comment.getArticleId(),comment.getParentCommentId(),2L) == 2;
+    }
+    private void delete(Comment comment)
+    {
+        commentRepository.delete(comment);
+        if(!comment.isRoot())
+        {
+            commentRepository.findById(comment.getParentCommentId())
+                    .filter(Comment::getDeleted)
+                    .filter(not(this::hasChildren))
+                    .ifPresent(this::delete);
+        }
     }
 
 }
