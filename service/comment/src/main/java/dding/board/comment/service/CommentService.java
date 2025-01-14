@@ -21,21 +21,19 @@ public class CommentService {
 
 
     @Transactional
-    public CommentResponse create (CommentCreateRequest req)
-    {
-        Comment parent = findParent(req);
+    public CommentResponse create(CommentCreateRequest request) {
+        Comment parent = findParent(request);
         Comment comment = commentRepository.save(
                 Comment.create(
                         pkProvider.getId(),
-                        req.getContent(),
-                        req.getParentCommentId(),
-                        req.getArticleId(),
-                        req.getWriterId()
+                        request.getContent(),
+                        parent == null ? null : parent.getCommentId(),
+                        request.getArticleId(),
+                        request.getWriterId()
                 )
         );
         return CommentResponse.from(comment);
     }
-
     private Comment findParent(CommentCreateRequest req)
     {
         var parentCommentId = req.getParentCommentId();
@@ -48,6 +46,8 @@ public class CommentService {
                 .filter(Comment::isRoot)
                 .orElseThrow();
     }
+
+
     public CommentResponse read (Long commentId)
     {
         return CommentResponse.from(
@@ -57,12 +57,11 @@ public class CommentService {
 
 
     @Transactional
-    public void delete(Long commentId)
-    {
+    public void delete(Long commentId) {
         commentRepository.findById(commentId)
-                .filter(not(Comment ::getDeleted))
+                .filter(not(Comment::getDeleted))
                 .ifPresent(comment -> {
-                    if(hasChildren(comment)) {
+                    if (hasChildren(comment)) {
                         comment.delete();
                     } else {
                         delete(comment);
@@ -70,19 +69,19 @@ public class CommentService {
                 });
     }
 
+
     private boolean hasChildren(Comment comment) {
-        return commentRepository.countBy(comment.getArticleId(),comment.getCommentId(),2L) == 2;
+        return commentRepository.countBy(comment.getArticleId(), comment.getCommentId(), 2L) == 2;
     }
-    private void delete(Comment comment)
-    {
+
+    @Transactional
+    protected void delete(Comment comment) {
         commentRepository.delete(comment);
-        if(!comment.isRoot())
-        {
+        if (!comment.isRoot()) {
             commentRepository.findById(comment.getParentCommentId())
                     .filter(Comment::getDeleted)
                     .filter(not(this::hasChildren))
                     .ifPresent(this::delete);
         }
     }
-
 }

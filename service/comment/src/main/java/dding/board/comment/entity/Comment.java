@@ -47,6 +47,6 @@ public class Comment {
     }
 
     public void delete(){
-        this.deleted = true;
+        deleted = true;
     }
 }
