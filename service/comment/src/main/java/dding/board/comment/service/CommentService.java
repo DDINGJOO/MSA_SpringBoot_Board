@@ -62,18 +62,16 @@ public class CommentService {
         commentRepository.findById(commentId)
                 .filter(not(Comment ::getDeleted))
                 .ifPresent(comment -> {
-                    if(hasChildren(comment))
-                    {
+                    if(hasChildren(comment)) {
                         comment.delete();
-                    } else
-                    {
+                    } else {
                         delete(comment);
                     }
                 });
     }
 
     private boolean hasChildren(Comment comment) {
-        return commentRepository.countBy(comment.getArticleId(),comment.getParentCommentId(),2L) == 2;
+        return commentRepository.countBy(comment.getArticleId(),comment.getCommentId(),2L) == 2;
     }
     private void delete(Comment comment)
     {
