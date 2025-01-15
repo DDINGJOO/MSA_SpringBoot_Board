@@ -1,9 +1,9 @@
-create table commnet (
-    comment_id bigint not null primary key ,
-    content varchar(3000) not null ,
-    article_id bigint not null ,
-    parent_comment_id bigint not null ,
-    writer_id bigint not null,
-    deleted bool not null ,
-    created_at datetime not null
+CREATE TABLE comment (
+                         comment_id BIGINT NOT NULL PRIMARY KEY,
+                         content VARCHAR(3000) NOT NULL,
+                         article_id BIGINT NOT NULL,
+                         parent_comment_id BIGINT NOT NULL,
+                         writer_id BIGINT NOT NULL,
+                         deleted BOOLEAN NOT NULL,
+                         created_at DATETIME NOT NULL
 );

@@ -4,7 +4,7 @@ spring:
   application:
     name: dding-board-comment-service
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/comment
+    url: jdbc:mysql://localhost:3306/comment
     username: root
     password: 1001
     driver-class-name: com.mysql.cj.jdbc.Driver
