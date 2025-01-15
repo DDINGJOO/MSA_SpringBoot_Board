@@ -147,4 +147,9 @@ public class ArticleLikeService {
     }
 
 
+    public Long count(Long articleId) {
+        return articleLikeCountRepository.findById(articleId)
+                .map(ArticleLikeCount::getLikeCount)
+                .orElse(0L);
+    }
 }
