@@ -11,7 +11,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Table(name = "commnet")
+@Table(name = "comment")
 @Getter
 @Entity
 @ToString
