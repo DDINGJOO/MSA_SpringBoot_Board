@@ -12,13 +12,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleLikeService {
 
-    private final PKProvicer pkProvicer = new SnowFlakePKProvider();
+    private final PKProvider pkProvider = new SnowFlakePKProvider();
     private final ArticleLikeRepository articleLikeRepository;
 
 
-
-
-    ArticleLikeResponse read(Long articleId, Long userId)
+    public ArticleLikeResponse read(Long articleId, Long userId)
     {
         return  articleLikeRepository.findByArticleIdAndUserId(articleId,userId)
                 .map(ArticleLikeResponse::from)
@@ -31,7 +29,7 @@ public class ArticleLikeService {
     {
         articleLikeRepository.save(
                 ArticleLike.create(
-                        pkProvicer.getId(),
+                        pkProvider.getId(),
                         articleId,
                         userId
                 )

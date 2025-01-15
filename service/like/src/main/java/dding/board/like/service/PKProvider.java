@@ -1,5 +1,5 @@
 package dding.board.like.service;
 
-public interface PKProvicer {
+public interface PKProvider {
     Long getId();
 }

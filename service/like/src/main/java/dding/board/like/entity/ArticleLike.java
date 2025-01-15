@@ -1,32 +1,34 @@
 package dding.board.like.entity;
 
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Table(name = "article_like")
 @Getter
-@NoArgsConstructor(access =  AccessLevel.PROTECTED)
+@Entity
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArticleLike {
     @Id
     private Long articleLikeId;
-    private Long articleId;
-    private Long user_id;
+    private Long articleId; // shard key
+    private Long userId;
     private LocalDateTime createdAt;
 
-
-    public  static ArticleLike create (Long articleLikeId, Long articleId, Long user_id)
-    {
+    public static ArticleLike create(Long articleLikeId, Long articleId, Long userId) {
         ArticleLike articleLike = new ArticleLike();
         articleLike.articleLikeId = articleLikeId;
-        articleLike.articleId  =articleId;
-        articleLike.user_id = user_id;
+        articleLike.articleId = articleId;
+        articleLike.userId = userId;
         articleLike.createdAt = LocalDateTime.now();
-        return  articleLike;
+        return articleLike;
     }
 }

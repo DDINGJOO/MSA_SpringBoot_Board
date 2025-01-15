@@ -3,7 +3,7 @@ spring:
   application:
     name: dding-board-like-service
   datasource:
-    url: jdbc:mysql://localhost:3306/like
+    url: jdbc:mysql://localhost:3306/article_like
     username: root
     password: 1001
     driver-class-name: com.mysql.cj.jdbc.Driver
