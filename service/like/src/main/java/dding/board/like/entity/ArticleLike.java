@@ -20,7 +20,7 @@ public class ArticleLike {
     private LocalDateTime createdAt;
 
 
-    public  static ArticleLike from (Long articleLikeId, Long articleId, Long user_id)
+    public  static ArticleLike create (Long articleLikeId, Long articleId, Long user_id)
     {
         ArticleLike articleLike = new ArticleLike();
         articleLike.articleLikeId = articleLikeId;
