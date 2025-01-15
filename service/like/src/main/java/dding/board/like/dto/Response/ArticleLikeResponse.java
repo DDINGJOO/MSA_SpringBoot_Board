@@ -21,11 +21,8 @@ public class ArticleLikeResponse {
         ArticleLikeResponse response = new ArticleLikeResponse();
         response.articleLikeId = articleLike.getArticleLikeId();
         response.articleId = articleLike.getArticleId();
-        response.user_id = articleLike.getUser_id();
+        response.user_id = articleLike.getUserId();
         response.createdAt = articleLike.getCreatedAt();
         return response;
     }
-
-
-
 }
