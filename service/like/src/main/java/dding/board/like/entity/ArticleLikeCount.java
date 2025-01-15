@@ -14,18 +14,18 @@ import lombok.*;
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
 public class ArticleLikeCount {
     @Id
-    private Long article_id; //shardKey
-    private Long like_count;
+    private Long articleId; //shardKey
+    private Long likeCount;
 
     @Version
     private Long version;
 
 
-    public static ArticleLikeCount create (Long article_id, Long like_count)
+    public static ArticleLikeCount create (Long articleId, Long likeCount)
     {
         ArticleLikeCount articleLikeCount = new ArticleLikeCount();
-        articleLikeCount.article_id = article_id;
-        articleLikeCount.like_count = like_count;
+        articleLikeCount.articleId = articleId;
+        articleLikeCount.likeCount = likeCount;
         articleLikeCount.version = 0L;
         return articleLikeCount;
     }
@@ -33,10 +33,10 @@ public class ArticleLikeCount {
 
     public void increase()
     {
-        this.like_count  +=1;
+        this.likeCount  +=1;
     }
     public void decrease()
     {
-        this.like_count -=1;
+        this.likeCount  -=1;
     }
 }

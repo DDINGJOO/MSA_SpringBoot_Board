@@ -129,7 +129,7 @@ public class ArticleLikeService {
                         userId
                 )
         );
-        var articleLikeCount = articleLikeCountRepository.findById(articleId).orElseGet(() -> ArticleLikeCount.create(articleId, 0L));
+        ArticleLikeCount articleLikeCount = articleLikeCountRepository.findById(articleId).orElseGet(() -> ArticleLikeCount.create(articleId, 0L));
         articleLikeCount.increase();
         articleLikeCountRepository.save(articleLikeCount);
     }
@@ -141,7 +141,7 @@ public class ArticleLikeService {
         articleLikeRepository.findByArticleIdAndUserId(articleId, userId)
                 .ifPresent(articleLike -> {
                     articleLikeRepository.delete(articleLike);
-                    var articleLikeCount = articleLikeCountRepository.findById(articleId).orElseThrow();
+                    ArticleLikeCount articleLikeCount = articleLikeCountRepository.findById(articleId).orElseThrow();
                     articleLikeCount.decrease();
                 });
     }
