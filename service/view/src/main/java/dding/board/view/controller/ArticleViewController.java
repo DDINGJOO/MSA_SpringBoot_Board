@@ -17,7 +17,7 @@ public class ArticleViewController {
 
 
     @PostMapping("/v1/article-views/articles/{articleId}/users/{userId}")
-    public Long increse(
+    public Long increase(
             @PathVariable("articleId") Long articleId,
             @PathVariable("userId") Long userId
     ) {

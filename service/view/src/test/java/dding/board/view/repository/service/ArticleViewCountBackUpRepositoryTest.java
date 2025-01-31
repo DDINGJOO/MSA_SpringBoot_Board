@@ -1,6 +1,7 @@
-package dding.board.view.repository;
+package dding.board.view.repository.service;
 
 import dding.board.view.entity.ArticleViewCount;
+import dding.board.view.repository.ArticleViewCountBackUpRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -8,9 +9,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.PrepareTestInstance;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
