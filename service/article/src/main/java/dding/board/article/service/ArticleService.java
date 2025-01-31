@@ -2,12 +2,14 @@ package dding.board.article.service;
 
 
 import dding.board.article.entity.Article;
+import dding.board.article.entity.BoardArticleCount;
 import dding.board.article.exceptions.NotFoundArticleById;
 import dding.board.article.repository.ArticleRepository;
 import dding.board.article.dto.request.ArticleCreateRequest;
 import dding.board.article.dto.request.ArticleUpdateRequest;
 import dding.board.article.dto.response.ArticlePageResponse;
 import dding.board.article.dto.response.ArticleResponse;
+import dding.board.article.repository.BoardArticleCountRepository;
 import dding.board.article.util.PKProvider.SnowFlakePKProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ import java.util.List;
 public class ArticleService {
     private final PKProvider PKProvider = new SnowFlakePKProvider();
     private final ArticleRepository articleRepository;
-
+    private final BoardArticleCountRepository boardArticleCountRepository;
 
 
     @Transactional
@@ -31,6 +33,13 @@ public class ArticleService {
                         PKProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
         );
 
+        int result = boardArticleCountRepository.increase(request.getBoardId());
+        if(result == 0 )
+        {
+            boardArticleCountRepository.save(
+                    BoardArticleCount.init(request.getBoardId())
+            );
+        }
         return ArticleResponse.form(article);
     }
 
@@ -84,7 +93,18 @@ public class ArticleService {
     @Transactional
     public void delete(Long articleId)
     {
-        articleRepository.deleteById(articleId);
+        Article article = articleRepository.findById(articleId).orElseThrow();
+        boardArticleCountRepository.decrease(article.getBoardId());
+        articleRepository.delete(article);
+
+    }
+
+
+    public Long count(Long boardId)
+    {
+        return boardArticleCountRepository.findById(boardId)
+                .map(BoardArticleCount::getArticleCount)
+                .orElse(0L);
     }
 
 }
