@@ -109,6 +109,26 @@ public class CommentApiTest {
                 .retrieve();
     }
 
+    @Test
+    void count()
+    {
+        CommentResponse response1 = createComment((new CommentCreateRequest(2L,"mycomment1", null, 1L)));
+        var count1 = restClient.get()
+                .uri("/v1/comments/articles/{articleId}/count",response1.getArticleId())
+                .retrieve()
+                .body(Long.class);
+
+        System.out.println("count1 = "+count1);
+        restClient.delete().uri("/v1/comments/{commentId}", response1.getCommentId())
+                .retrieve();
+
+        var count2 = restClient.get()
+                .uri("/v1/comments/articles/{articleId}/count",response1.getArticleId())
+                .retrieve()
+                .body(Long.class);
+
+        System.out.println("count2 = " +count2);
+    }
 
 
 
