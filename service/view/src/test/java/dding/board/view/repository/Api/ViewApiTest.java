@@ -35,6 +35,7 @@ public class ViewApiTest
                 .uri("/v1/article-views/articles/{articleId}/count",3L)
                 .retrieve()
                 .body(Long.class);
+        System.out.println(count);
 
 
     }
