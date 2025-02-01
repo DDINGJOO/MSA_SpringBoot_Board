@@ -10,5 +10,4 @@ include 'service:article-read'
 include 'service:hot-article'
 include 'service:like'
 include 'service:view'
-include 'service:board'
 
