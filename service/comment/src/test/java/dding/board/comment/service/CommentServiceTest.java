@@ -47,7 +47,7 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("하위 댓글이 삭제되고, 삭제됮 ㅣ않은 부모면, 하위 댓글만 삭제한다..")
+    @DisplayName("하위 댓글이 삭제되고, 삭제되지 않은 부모면, 하위 댓글만 삭제한다..")
     void deleteSchouldDeleteChildOnlyIfNotDeletedParent()
     {
 

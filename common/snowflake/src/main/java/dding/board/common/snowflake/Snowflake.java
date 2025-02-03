@@ -33,7 +33,6 @@ public class Snowflake{
 		} else {
 			sequence = 0;
 		}
-
 		lastTimeMillis = currentTimeMillis;
 
 		return ((currentTimeMillis - startTimeMillis) << (NODE_ID_BITS + SEQUENCE_BITS))

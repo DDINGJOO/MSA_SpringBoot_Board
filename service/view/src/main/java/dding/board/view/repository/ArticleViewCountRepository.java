@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 public class ArticleViewCountRepository {
     private final StringRedisTemplate redisTemplate;
 
-
-
     // view : article::{article_id} :: view_count
     private static final String KEY_FORMAT = "article::%s :: view_count";
 
@@ -33,4 +31,5 @@ public class ArticleViewCountRepository {
     {
         return KEY_FORMAT.formatted(articleId);
     }
+
 }

@@ -2,6 +2,7 @@ package dding.board.article.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Article {
     private String title;
     private String content;
     private Long boardId; // shard key
+
     private Long writerId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

@@ -9,6 +9,7 @@ import dding.board.comment.entity.Comment;
 import dding.board.comment.repository.ArticleCommentCountRepository;
 import dding.board.comment.repository.CommentRepository;
 import dding.board.comment.util.PKProvider.SnowFlakePKProvider;
+import exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,25 +48,23 @@ public class CommentService {
 
         return CommentResponse.from(comment);
     }
-    private Comment findParent(CommentCreateRequest req)
-    {
-        var parentCommentId = req.getParentCommentId();
-        if(parentCommentId == null)
-        {
-            return null;
-        }
-        return  commentRepository.findById(parentCommentId)
-                .filter(not(Comment::getDeleted))
-                .filter(Comment::isRoot)
-                .orElseThrow();
-    }
-
 
     public CommentResponse read (Long commentId)
     {
         return CommentResponse.from(
-                commentRepository.findById(commentId).orElseThrow()
-       );
+                commentRepository.findById(commentId).orElseThrow(()
+                        -> new NotFoundException("지정된 오브젝트를 찾을 수 없습니다. code:404"))
+        );
+    }
+
+
+    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
+        return CommentPageResponse.of(
+                commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
+                        .map(CommentResponse::from)
+                        .toList(),
+                commentRepository.count(articleId, PageLimitCalculator.calculator(page, pageSize, 10L))
+        );
     }
 
 
@@ -81,6 +80,24 @@ public class CommentService {
                     }
                 });
     }
+
+    private Comment findParent(CommentCreateRequest req)
+    {
+        var parentCommentId = req.getParentCommentId();
+        if(parentCommentId == null)
+        {
+            return null;
+        }
+        return  commentRepository.findById(parentCommentId)
+                .filter(not(Comment::getDeleted))
+                .filter(Comment::isRoot)
+                .orElseThrow();
+    }
+
+
+
+
+
 
 
     private boolean hasChildren(Comment comment) {
@@ -100,15 +117,6 @@ public class CommentService {
     }
 
 
-
-    public CommentPageResponse readAll(Long articleId, Long page, Long pageSize) {
-        return CommentPageResponse.of(
-                commentRepository.findAll(articleId, (page - 1) * pageSize, pageSize).stream()
-                        .map(CommentResponse::from)
-                        .toList(),
-                commentRepository.count(articleId, PageLimitCalculator.calculator(page, pageSize, 10L))
-        );
-    }
 
     public List<CommentResponse> readAll(Long articleId, Long lastParentCommentId, Long lastCommentId, Long limit) {
         List<Comment> comments = lastParentCommentId == null || lastCommentId == null ?

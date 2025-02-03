@@ -3,6 +3,8 @@ rootProject.name = 'msa_borad'
 include 'service'
 include 'common'
 include 'common:snowflake'
+include 'common:data-serializer'
+include 'common:event'
 
 include 'service:article'
 include 'service:comment'
