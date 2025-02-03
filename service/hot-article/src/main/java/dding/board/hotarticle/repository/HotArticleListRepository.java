@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Repository
 @Slf4j
@@ -32,10 +34,22 @@ public class HotArticleListRepository {
             StringRedisConnection conn  = (StringRedisConnection) action;
             String key = generateKey(time);
             conn.zAdd(key,score,String.valueOf(articleId));
-            conn.zRemRange(key, 0,10);
+            conn.zRemRange(key, 0,-limit-1);
             conn.expire(key,ttl.toSeconds());
             return null;
         });
+    }
+
+    public List<Long> readAll(String date)
+    {
+        return redisTemplate.opsForZSet()
+                .reverseRangeWithScores(generateKey(date),0, -1).stream()
+                .peek(tuple -> log.info(
+                        "[HotArticleListRepository.readAll] articleId = {}, score = {}", tuple.getValue(), tuple.getScore()))
+                .map(ZSetOperations.TypedTuple::getValue)
+                .map(Long::valueOf)
+                .toList();
+
     }
 
 
