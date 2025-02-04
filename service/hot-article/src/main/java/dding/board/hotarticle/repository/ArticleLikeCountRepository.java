@@ -9,7 +9,7 @@ import java.time.Duration;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleLikeRepository {
+public class ArticleLikeCountRepository {
 
     private final StringRedisTemplate redisTemplate;
 
