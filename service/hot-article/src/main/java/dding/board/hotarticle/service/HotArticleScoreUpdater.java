@@ -1,0 +1,4 @@
+package dding.board.hotarticle.service;
+
+public class HotArticleScoreUpdater {
+}
