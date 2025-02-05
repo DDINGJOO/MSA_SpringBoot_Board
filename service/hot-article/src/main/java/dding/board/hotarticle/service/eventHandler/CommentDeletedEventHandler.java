@@ -31,7 +31,7 @@ public class CommentDeletedEventHandler  implements EventHandler<CommentDeletedE
     }
 
     @Override
-    public Long findArticleId(Event<CommentDeletedEventPayload> evnet) {
-        return evnet.getPayload().getArticleId();
+    public Long findArticleId(Event<CommentDeletedEventPayload> event) {
+        return event.getPayload().getArticleId();
     }
 }

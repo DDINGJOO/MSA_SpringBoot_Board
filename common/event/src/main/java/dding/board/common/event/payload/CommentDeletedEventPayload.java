@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CommentDeletedEventPayload implements EventPayload {
     private Long commentId;
     private String content;
-    private String path;
+    private Long parentCommentId;
     private Long articleId;
     private Long writerId;
     private Boolean deleted;

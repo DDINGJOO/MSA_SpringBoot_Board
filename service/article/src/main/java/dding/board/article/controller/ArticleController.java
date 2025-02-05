@@ -16,8 +16,11 @@ import java.util.List;
 public class ArticleController {
     private  final ArticleService articleService;
 
+
     @GetMapping("/v1/articles/{articleId}")
-    public ArticleResponse read(@PathVariable Long articleId)
+    public ArticleResponse read(
+            @PathVariable("articleId") Long articleId
+    )
     {
         return articleService.read(articleId);
     }

@@ -20,26 +20,21 @@ public class Event<T extends EventPayload> {
         return  event;
     }
 
-    public String tojson()
+    public String toJson()
     {
         return DataSerializer.serialize(this);
     }
 
-    public static Event<EventPayload> fromjson(String json)
-    {
-
+    public static Event<EventPayload> fromJson(String json) {
         EventRaw eventRaw = DataSerializer.deserialize(json, EventRaw.class);
-        if(eventRaw == null)
-        {
-        return null;
+        if (eventRaw == null) {
+            return null;
         }
-
         Event<EventPayload> event = new Event<>();
         event.eventId = eventRaw.getEventId();
         event.type = EventType.from(eventRaw.getType());
         event.payload = DataSerializer.deserialize(eventRaw.getPayload(), event.type.getPayloadClass());
         return event;
-
     }
 
     @Getter

@@ -23,7 +23,7 @@ public class OutboxEventPublisher {
                 type,
                 Event.of(
                         eventIdProvider.getId(),type,payload
-                ).tojson(),
+                ).toJson(),
                 shardKey % MessageRelayConstants.SHARD_COUNT
         );
         applicationEventPublisher.publishEvent(OutboxEvent.of(outbox));

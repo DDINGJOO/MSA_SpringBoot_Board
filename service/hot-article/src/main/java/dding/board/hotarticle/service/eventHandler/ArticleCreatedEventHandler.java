@@ -1,35 +1,35 @@
 package dding.board.hotarticle.service.eventHandler;
 
 import dding.board.common.event.Event;
+import dding.board.common.event.EventType;
 import dding.board.common.event.payload.ArticleCreatedEventPayload;
-import dding.board.hotarticle.repository.ArticleCreateTimeRepository;
+import dding.board.hotarticle.repository.ArticleCreatedTimeRepository;
 import dding.board.hotarticle.utils.TimeCalculatorUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ArticleCreatedArticleHandler implements EventHandler<ArticleCreatedEventPayload> {
-    private final ArticleCreateTimeRepository articleCreateTimeRepository;
+public class ArticleCreatedEventHandler implements EventHandler<ArticleCreatedEventPayload>{
+    private final ArticleCreatedTimeRepository articleCreatedTimeRepository;
 
     @Override
     public void handle(Event<ArticleCreatedEventPayload> event) {
         ArticleCreatedEventPayload payload = event.getPayload();
-        articleCreateTimeRepository.createOrUpdate(
+        articleCreatedTimeRepository.createOrUpdate(
                 payload.getArticleId(),
                 payload.getCreatedAt(),
                 TimeCalculatorUtils.calculateDurationToMidnight()
         );
-
     }
 
     @Override
     public boolean supports(Event<ArticleCreatedEventPayload> event) {
-        return false;
+        return EventType.ARTICLE_CREATED == event.getType();
     }
 
     @Override
-    public Long findArticleId(Event<ArticleCreatedEventPayload> evnet) {
-        return 0L;
+    public Long findArticleId(Event<ArticleCreatedEventPayload> event) {
+        return event.getPayload().getArticleId();
     }
 }

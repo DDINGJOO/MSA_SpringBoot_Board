@@ -17,36 +17,33 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ArticleClient {
     private RestClient restClient;
-    @Value("endpoint.dding-board-article-service.url")
+    @Value("${endpoints.dding-board-article-service.url}")
     private String articleServiceUrl;
 
+
+
     @PostConstruct
-    void initRestClient()
-    {
+    void initRestClient() {
         restClient = RestClient.create(articleServiceUrl);
     }
 
-
-
-    public ArticleResponse read(Long articleId)
-    {
-        try{
+    public ArticleResponse read(Long articleId) {
+        try {
             return restClient.get()
-                    .uri("/v1/articles/{articleId}",articleId)
+                    .uri("/v1/articles/{articleId}", articleId)
                     .retrieve()
                     .body(ArticleResponse.class);
-        }catch (Exception e)
-        {
-            log.error("[ArticleClient.read] articleId = {}", articleId, e);
-            return null;
+        } catch (Exception e) {
+            log.error("[ArticleClient.read] articleId={}", articleId, e);
         }
+        return null;
     }
 
-    @Getter
-    public static class ArticleResponse
 
-    {
+    @Getter
+    public static class ArticleResponse {
         private Long articleId;
         private String title;
-        private LocalDateTime createAt;
-    }}
+        private LocalDateTime createdAt;
+    }
+}

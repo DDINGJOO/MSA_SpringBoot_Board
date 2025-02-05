@@ -10,36 +10,34 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@NoArgsConstructor(access= AccessLevel.PRIVATE)
-public class DataSerializer {
-    private static final ObjectMapper objectMapper = initalizer();
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DataSerializer {
+    private static final ObjectMapper objectMapper = initialize();
 
-    private static ObjectMapper initalizer() {
+    private static ObjectMapper initialize() {
         return new ObjectMapper()
                 .registerModule(new JavaTimeModule())
-                .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public static <T> T deserialize(String data , Class<T> clazz)
-    {
+    public static <T> T deserialize(String data, Class<T> clazz) {
         try {
             return objectMapper.readValue(data, clazz);
         } catch (JsonProcessingException e) {
-            log.error("[DataSerializer.deserialize] data={}, clazz={}",data,clazz,e);
+            log.error("[DataSerializer.deserialize] data={}, clazz={}", data, clazz, e);
             return null;
         }
     }
 
-    public static <T> T deserialize(Object data, Class<T> clazz)
-    {
-        return objectMapper.convertValue(data,clazz);
+    public static <T> T deserialize(Object data, Class<T> clazz) {
+        return objectMapper.convertValue(data, clazz);
     }
 
-    public static String serialize(Object object){
+    public static String serialize(Object object) {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            log.error("[DataSerializer.serialize] object = {}",object,e);
+            log.error("[DataSerializer.serialize] object={}", object, e);
             return null;
         }
     }

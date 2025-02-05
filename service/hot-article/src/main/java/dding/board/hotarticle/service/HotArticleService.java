@@ -10,7 +10,6 @@ import dding.board.hotarticle.service.eventHandler.EventHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -23,42 +22,35 @@ public class HotArticleService {
     private final HotArticleScoreUpdater hotArticleScoreUpdater;
     private final HotArticleListRepository hotArticleListRepository;
 
-
-    public void handleEvent(Event<EventPayload> event)
-    {
+    public void handleEvent(Event<EventPayload> event) {
         EventHandler<EventPayload> eventHandler = findEventHandler(event);
-        if(event == null)
-        {
+        if (eventHandler == null) {
             return;
         }
 
-        if(isArticleCreatedOrDeleted(event))
-        {
+        if (isArticleCreatedOrDeleted(event)) {
             eventHandler.handle(event);
-        }
-        else {
+        } else {
             hotArticleScoreUpdater.update(event, eventHandler);
         }
+    }
+
+    private EventHandler<EventPayload> findEventHandler(Event<EventPayload> event) {
+        return eventHandlers.stream()
+                .filter(eventHandler -> eventHandler.supports(event))
+                .findAny()
+                .orElse(null);
     }
 
     private boolean isArticleCreatedOrDeleted(Event<EventPayload> event) {
         return EventType.ARTICLE_CREATED == event.getType() || EventType.ARTICLE_DELETED == event.getType();
     }
 
-    private EventHandler<EventPayload> findEventHandler(Event<EventPayload> event) {
-        return eventHandlers.stream()
-                .filter(eventHandler -> eventHandler.supports(event))
-                .findAny().orElse(null);
-    }
-
-
-    public List<HotArticleResponse> readAll(String dateStr) //yyyyMMdd
-    {
+    public List<HotArticleResponse> readAll(String dateStr) {
         return hotArticleListRepository.readAll(dateStr).stream()
                 .map(articleClient::read)
                 .filter(Objects::nonNull)
                 .map(HotArticleResponse::from)
                 .toList();
     }
-
 }

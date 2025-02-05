@@ -3,20 +3,19 @@ spring:
   application:
     name: dding-board-article-service
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/article
     username: root
     password: 1001
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: true
     hibernate:
       ddl-auto: none
-    show-sql: false
-    properties:
-      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
-  date:
+  data:
     redis:
       host: 127.0.0.1
       port: 6379
-
   kafka:
     bootstrap-servers: 127.0.0.1:9092

@@ -5,7 +5,6 @@ import dding.board.common.event.EventType;
 import dding.board.common.event.payload.CommentCreatedEventPayload;
 import dding.board.hotarticle.repository.ArticleCommentCountRepository;
 import dding.board.hotarticle.utils.TimeCalculatorUtils;
-import io.lettuce.core.dynamic.annotation.CommandNaming;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,7 @@ public class CommentCreatedEventHandler implements EventHandler<CommentCreatedEv
     }
 
     @Override
-    public Long findArticleId(Event<CommentCreatedEventPayload> evnet) {
-        return evnet.getPayload().getArticleId();
+    public Long findArticleId(Event<CommentCreatedEventPayload> event) {
+        return event.getPayload().getArticleId();
     }
 }

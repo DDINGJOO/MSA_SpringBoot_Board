@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.lang.ScopedValue;
 import java.util.List;
 
 @Repository
@@ -63,8 +64,4 @@ public interface ArticleRepository  extends JpaRepository<Article, Long> {
 
     )
     Long count(@Param("boardId") Long boardId, @Param("limit") Long limit);
-
-
-
-
 }

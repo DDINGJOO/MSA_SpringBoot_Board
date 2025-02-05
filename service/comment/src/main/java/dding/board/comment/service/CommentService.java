@@ -9,6 +9,11 @@ import dding.board.comment.entity.Comment;
 import dding.board.comment.repository.ArticleCommentCountRepository;
 import dding.board.comment.repository.CommentRepository;
 import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
+import dding.board.common.event.EventType;
+import dding.board.common.event.payload.ArticleViewedEventPayload;
+import dding.board.common.event.payload.CommentCreatedEventPayload;
+import dding.board.common.outboxmessagerelay.OutboxEventPublisher;
+import dding.board.common.outboxmessagerelay.OutboxRepository;
 import exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +26,9 @@ import static java.util.function.Predicate.not;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ArticleCommentCountRepository articleCommentCountRepository;
+    private final OutboxEventPublisher outboxEventPublisher;
     private final PrimaryIdProvider primaryKeyProvider = new PrimaryIdProvider();
-
+    private final OutboxRepository outboxRepository;
 
 
     @Transactional
@@ -36,6 +42,7 @@ public class CommentService {
                         request.getArticleId(),
                         request.getWriterId()
                 )
+
         );
         var result = articleCommentCountRepository.increase(request.getArticleId());
         if(result == 0)
@@ -44,6 +51,20 @@ public class CommentService {
                     ArticleCommentCount.init(request.getArticleId())
             );
         }
+
+        outboxEventPublisher.publish(
+                EventType.COMMENT_CREATED,
+                CommentCreatedEventPayload.builder()
+                        .createdAt(comment.getCreatedAt())
+                        .articleCommentCount(count(comment.getArticleId()))
+                        .commentId(comment.getCommentId())
+                        .articleId(comment.getArticleId())
+                        .content(comment.getContent())
+                        .deleted(comment.getDeleted())
+                        .writerId(comment.getWriterId())
+                        .build(),
+                comment.getArticleId()
+        );
 
 
         return CommentResponse.from(comment);
@@ -73,12 +94,28 @@ public class CommentService {
         commentRepository.findById(commentId)
                 .filter(not(Comment::getDeleted))
                 .ifPresent(comment -> {
+                    outboxEventPublisher.publish(
+                            EventType.COMMENT_CREATED,
+                            CommentCreatedEventPayload.builder()
+                                    .createdAt(comment.getCreatedAt())
+                                    .articleCommentCount(count(comment.getArticleId()))
+                                    .commentId(comment.getCommentId())
+                                    .articleId(comment.getArticleId())
+                                    .content(comment.getContent())
+                                    .deleted(comment.getDeleted())
+                                    .writerId(comment.getWriterId())
+                                    .build(),
+                            comment.getArticleId()
+                    );
                     if (hasChildren(comment)) {
                         comment.delete();
                     } else {
                         delete(comment);
                     }
+
                 });
+
+
     }
 
     private Comment findParent(CommentCreateRequest req)

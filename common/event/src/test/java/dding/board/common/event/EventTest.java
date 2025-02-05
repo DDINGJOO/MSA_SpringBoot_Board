@@ -26,11 +26,11 @@ public class EventTest {
                 EventType.ARTICLE_CREATED,
                 payload
         );
-        String json = event.tojson();
+        String json = event.toJson();
         System.out.println("json = "+json);
 
         //when
-        Event<EventPayload> result = Event.fromjson(json);
+        Event<EventPayload> result = Event.fromJson(json);
 
         //then
         Assertions.assertThat(result.getEventId()).isEqualTo(event.getEventId());

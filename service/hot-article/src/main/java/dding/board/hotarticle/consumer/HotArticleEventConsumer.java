@@ -22,12 +22,10 @@ public class HotArticleEventConsumer {
             EventType.Topic.DDING_BOARD_LIKE,
             EventType.Topic.DDING_BOARD_VIEW
     })
-    public void listen(String message , Acknowledgment ack)
-    {
-        log.info("[HotArticleEventConsumer.listen] received message = {}", message);
-        Event<EventPayload> event = Event.fromjson(message);
-        if(event!= null)
-        {
+    public void listen(String message, Acknowledgment ack) {
+        log.info("[HotArticleEventConsumer.listen] received message={}", message);
+        Event<EventPayload> event = Event.fromJson(message);
+        if (event != null) {
             hotArticleService.handleEvent(event);
         }
         ack.acknowledge();

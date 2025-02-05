@@ -10,18 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
 public class HotArticleController {
     private final HotArticleService hotArticleService;
 
-
-    @GetMapping("/v1/hot-articles/articles/date/{dataStr}")
-    //yyyyMMdd
+    @GetMapping("/v1/hot-articles/articles/date/{dateStr}")
     public List<HotArticleResponse> readAll(
-            @PathVariable("dataStr") String dataStr
-    )
-    {
-        return hotArticleService.readAll(dataStr);
+            @PathVariable("dateStr") String dateStr
+    ) {
+        return hotArticleService.readAll(dateStr);
     }
 }

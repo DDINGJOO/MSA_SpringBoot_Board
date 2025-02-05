@@ -12,7 +12,7 @@ import java.time.ZoneOffset;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleCreateTimeRepository {
+public class ArticleCreatedTimeRepository {
     private final StringRedisTemplate redisTemplate;
 
     //hot-article::article::{articleId}::created-time

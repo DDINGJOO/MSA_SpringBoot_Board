@@ -1,7 +1,7 @@
 package dding.board.hotarticle.service;
 
 import dding.board.common.event.Event;
-import dding.board.hotarticle.repository.ArticleCreateTimeRepository;
+import dding.board.hotarticle.repository.ArticleCreatedTimeRepository;
 import dding.board.hotarticle.repository.HotArticleListRepository;
 import dding.board.hotarticle.service.eventHandler.EventHandler;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -29,7 +28,7 @@ class HotArticleScoreUpdaterTest {
     @Mock
     HotArticleScoreCalculator hotArticleScoreCalculator;
     @Mock
-    ArticleCreateTimeRepository articleCreateTimeRepository;
+    ArticleCreatedTimeRepository articleCreatedTimeRepository;
 
 
 
@@ -44,7 +43,7 @@ class HotArticleScoreUpdaterTest {
         given(eventHandler.findArticleId(event)).willReturn(articleId);
         LocalDateTime createdTime = LocalDateTime.now().minusDays(1);
 
-        given(articleCreateTimeRepository.read(articleId)).willReturn(createdTime);
+        given(articleCreatedTimeRepository.read(articleId)).willReturn(createdTime);
 
 
         //when
@@ -68,7 +67,7 @@ class HotArticleScoreUpdaterTest {
         given(eventHandler.findArticleId(event)).willReturn(articleId);
         LocalDateTime createdTime = LocalDateTime.now();
 
-        given(articleCreateTimeRepository.read(articleId)).willReturn(createdTime);
+        given(articleCreatedTimeRepository.read(articleId)).willReturn(createdTime);
 
 
         //when

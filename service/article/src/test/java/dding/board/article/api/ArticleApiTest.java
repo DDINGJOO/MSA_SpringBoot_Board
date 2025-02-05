@@ -37,12 +37,13 @@ public class ArticleApiTest {
 
     @Test
     void readTest() {
-        ArticleResponse response = read(FactoryArticle().getArticleId());
+        ArticleResponse response = FactoryArticle();
         System.out.println("response = " + response);
+        read(response.getArticleId());
     }
 
-    ArticleResponse read(Long articleId) {
-        return restClient.get()
+    void read(Long articleId) {
+        restClient.get()
                 .uri("/v1/articles/{articleId}", articleId)
                 .retrieve()
                 .body(ArticleResponse.class);

@@ -87,9 +87,10 @@ public class ArticleService {
 
 
 
-    public ArticleResponse read( Long articleId)
+    public ArticleResponse read(Long articleId)
     {
-        return ArticleResponse.form(articleRepository.findById(articleId).orElseThrow(NotFoundArticleById::new));
+        return ArticleResponse.form(articleRepository.findById(articleId).orElseThrow());
+
     }
 
 

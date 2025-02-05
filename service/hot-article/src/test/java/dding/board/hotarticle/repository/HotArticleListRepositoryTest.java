@@ -22,7 +22,8 @@ class HotArticleListRepositoryTest {
     @Test
     void addTest() throws InterruptedException {
         //Given
-        LocalDateTime time = LocalDateTime.of(2025,2,3,0,0);
+        LocalDateTime time = LocalDateTime.of(2025,2,5,0,0);
+        System.out.println(time.toString());
         long limit = 3L;
 
         //when
@@ -36,7 +37,7 @@ class HotArticleListRepositoryTest {
         // RANK : 3- 2- 1- 4-5
 
         //then
-        List<Long> articleIds = hotArticleListRepository.readAll("20250203");
+        List<Long> articleIds = hotArticleListRepository.readAll("20250205");
 
         Assertions.assertThat(articleIds).hasSize(Long.valueOf(limit).intValue());
         Assertions.assertThat(articleIds.get(0)).isEqualTo(3);
@@ -44,8 +45,19 @@ class HotArticleListRepositoryTest {
         Assertions.assertThat(articleIds.get(2)).isEqualTo(1);
 
         TimeUnit.SECONDS.sleep(5);
-        Assertions.assertThat(hotArticleListRepository.readAll("20250203")).isEmpty();
+        Assertions.assertThat(hotArticleListRepository.readAll("20250205")).isEmpty();
 
 
+    }
+
+    @Test
+    void readTest()
+    {
+        List<Long> articlesId = hotArticleListRepository.readAll("20250205");
+        System.out.println("err line");
+        for(long ids: articlesId)
+        {
+            System.out.println(ids);
+        }
     }
 }

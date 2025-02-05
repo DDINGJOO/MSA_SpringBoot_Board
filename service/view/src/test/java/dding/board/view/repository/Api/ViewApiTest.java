@@ -20,9 +20,10 @@ public class ViewApiTest
 
 
         for (int i = 0; i < 10000; i++) {
+            long j = i;
             executorService.submit(() -> {
                 restClient.post()
-                        .uri("/v1/article-views/articles/{articleId}/users/{userId}", 3L, 1L)
+                        .uri("/v1/article-views/articles/{articleId}/users/{userId}", 3L, j)
                                 .retrieve();
                 latch.countDown();
 

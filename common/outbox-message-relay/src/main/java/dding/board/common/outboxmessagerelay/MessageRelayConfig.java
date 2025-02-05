@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -21,41 +22,36 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-
 @EnableAsync
-@Configurable
-@ComponentScan("dding-board.common.outboxmessagerelay")
+@Configuration
+@ComponentScan("dding.board.common.outboxmessagerelay")
 @EnableScheduling
 public class MessageRelayConfig {
-
-    @Value("&{spring.kafka.bootstrap-servers}")
-    private String bootstrapServer;
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
 
     @Bean
-    public KafkaTemplate<String, String> messageRelayKafkaTemplate(){
+    public KafkaTemplate<String, String> messageRelayKafkaTemplate() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.ACKS_CONFIG, "all");
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(configProps));
     }
 
-
     @Bean
-    public Executor messageRelayPublishEventExecutor(){
+    public Executor messageRelayPublishEventExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(20);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("mr-pub-event");
+        executor.setThreadNamePrefix("mr-pub-event-");
         return executor;
     }
 
     @Bean
-    public Executor messageRelayPublishPendingEventExecutor()
-    {
+    public Executor messageRelayPublishPendingEventExecutor() {
         return Executors.newSingleThreadScheduledExecutor();
     }
-
 }

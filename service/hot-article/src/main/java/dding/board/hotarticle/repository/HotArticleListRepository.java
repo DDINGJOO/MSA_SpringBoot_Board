@@ -15,55 +15,47 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Repository
 @Slf4j
+@Repository
 @RequiredArgsConstructor
 public class HotArticleListRepository {
     private final StringRedisTemplate redisTemplate;
 
+    // hot-article::list::{yyyyMMdd}
+    private static final String KEY_FORMAT = "hot-article::list::%s";
 
-    //hot-article::list::{yyyyMMdd}
-    private static final String KET_FORMAT = "hot-article::list::%s";
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-
-    public void add(Long articleId, LocalDateTime time, Long score , Long limit, Duration ttl)
-    {
-        redisTemplate.executePipelined((RedisCallback<?>) action ->{
-            StringRedisConnection conn  = (StringRedisConnection) action;
+    public void add(Long articleId, LocalDateTime time, Long score, Long limit, Duration ttl) {
+        redisTemplate.executePipelined((RedisCallback<?>) action -> {
+            StringRedisConnection conn = (StringRedisConnection) action;
             String key = generateKey(time);
-            conn.zAdd(key,score,String.valueOf(articleId));
-            conn.zRemRange(key, 0,-limit-1);
-            conn.expire(key,ttl.toSeconds());
+            conn.zAdd(key, score, String.valueOf(articleId));
+            conn.zRemRange(key, 0, - limit - 1);
+            conn.expire(key, ttl.toSeconds());
             return null;
         });
     }
 
-    public List<Long> readAll(String date)
-    {
-        return redisTemplate.opsForZSet()
-                .reverseRangeWithScores(generateKey(date),0, -1).stream()
-                .peek(tuple -> log.info(
-                        "[HotArticleListRepository.readAll] articleId = {}, score = {}", tuple.getValue(), tuple.getScore()))
-                .map(ZSetOperations.TypedTuple::getValue)
-                .map(Long::valueOf)
-                .toList();
-
-    }
-
-    public void remove(Long articleId, LocalDateTime time)
-    {
+    public void remove(Long articleId, LocalDateTime time) {
         redisTemplate.opsForZSet().remove(generateKey(time), String.valueOf(articleId));
     }
 
-
-    private String generateKey(LocalDateTime time){
-        return generateKey(TIME_FORMAT.format(time));
+    private String generateKey(LocalDateTime time) {
+        return generateKey(TIME_FORMATTER.format(time));
     }
 
-    private String generateKey(String datestr)
-    {
-        return KET_FORMAT.formatted(datestr);
+    private String generateKey(String dateStr) {
+        return KEY_FORMAT.formatted(dateStr);
+    }
+
+    public List<Long> readAll(String dateStr) {
+        return redisTemplate.opsForZSet()
+                .reverseRangeWithScores(generateKey(dateStr), 0, -1).stream()
+                .peek(tuple ->
+                        log.info("[HotArticleListRepository.readAll] articleId={}, score={}", tuple.getValue(), tuple.getScore()))
+                .map(ZSetOperations.TypedTuple::getValue)
+                .map(Long::valueOf)
+                .toList();
     }
 }

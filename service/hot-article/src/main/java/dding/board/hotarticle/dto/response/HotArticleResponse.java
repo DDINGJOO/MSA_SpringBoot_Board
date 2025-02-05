@@ -3,10 +3,12 @@ package dding.board.hotarticle.dto.response;
 
 import dding.board.hotarticle.client.ArticleClient;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 public class HotArticleResponse {
     private Long articleId;
     private String title;
@@ -18,7 +20,7 @@ public class HotArticleResponse {
         HotArticleResponse response = new HotArticleResponse();
         response.articleId = articleResponse.getArticleId();
         response.title = articleResponse.getTitle();
-        response.createdAt = articleResponse.getCreateAt();
+        response.createdAt = articleResponse.getCreatedAt();
         return response;
     }
 }

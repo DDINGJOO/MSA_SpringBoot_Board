@@ -29,7 +29,7 @@ public class ArticleLikedEventHandler implements EventHandler<ArticleLikedEventP
     }
 
     @Override
-    public Long findArticleId(Event<ArticleLikedEventPayload> evnet) {
-        return evnet.getPayload().getArticleId();
+    public Long findArticleId(Event<ArticleLikedEventPayload> event) {
+        return event.getPayload().getArticleId();
     }
 }
