@@ -8,7 +8,7 @@ import dding.board.comment.entity.ArticleCommentCount;
 import dding.board.comment.entity.Comment;
 import dding.board.comment.repository.ArticleCommentCountRepository;
 import dding.board.comment.repository.CommentRepository;
-import dding.board.comment.util.PKProvider.SnowFlakePKProvider;
+import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
 import exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import static java.util.function.Predicate.not;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ArticleCommentCountRepository articleCommentCountRepository;
-    private final PKProvider pkProvider = new SnowFlakePKProvider();
+    private final PrimaryIdProvider primaryKeyProvider;
 
 
 
@@ -30,7 +30,7 @@ public class CommentService {
         Comment parent = findParent(request);
         Comment comment = commentRepository.save(
                 Comment.create(
-                        pkProvider.getId(),
+                        primaryKeyProvider.getId(),
                         request.getContent(),
                         parent == null ? null : parent.getCommentId(),
                         request.getArticleId(),

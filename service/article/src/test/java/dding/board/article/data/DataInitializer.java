@@ -1,7 +1,6 @@
 package dding.board.article.data;
 
 import dding.board.article.entity.Article;
-import dding.board.article.service.PKProvider;
 import dding.board.article.util.PKProvider.SnowFlakePKProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

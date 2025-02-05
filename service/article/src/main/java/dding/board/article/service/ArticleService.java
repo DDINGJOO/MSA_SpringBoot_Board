@@ -10,7 +10,7 @@ import dding.board.article.dto.request.ArticleUpdateRequest;
 import dding.board.article.dto.response.ArticlePageResponse;
 import dding.board.article.dto.response.ArticleResponse;
 import dding.board.article.repository.BoardArticleCountRepository;
-import dding.board.article.util.PKProvider.SnowFlakePKProvider;
+import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final PKProvider PKProvider = new SnowFlakePKProvider();
+    private final PrimaryIdProvider primaryIdProvider;
     private final ArticleRepository articleRepository;
     private final BoardArticleCountRepository boardArticleCountRepository;
 
@@ -30,7 +30,7 @@ public class ArticleService {
     {
         Article article = articleRepository.save(
                 Article.create(
-                        PKProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
+                        primaryIdProvider.getId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
         );
 
         int result = boardArticleCountRepository.increase(request.getBoardId());

@@ -1,11 +1,11 @@
 package dding.board.like.service;
 
+import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
 import dding.board.like.dto.Response.ArticleLikeResponse;
 import dding.board.like.entity.ArticleLike;
 import dding.board.like.entity.ArticleLikeCount;
 import dding.board.like.repository.ArticleLikeCountRepository;
 import dding.board.like.repository.ArticleLikeRepository;
-import dding.board.like.util.PKProvider.SnowFlakePKProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleLikeService {
 
-    private final PKProvider pkProvider = new SnowFlakePKProvider();
+    private final PrimaryIdProvider primaryIdProvider;
     private final ArticleLikeRepository articleLikeRepository;
     private  final ArticleLikeCountRepository articleLikeCountRepository;
 
@@ -34,7 +34,7 @@ public class ArticleLikeService {
     {
         articleLikeRepository.save(
                 ArticleLike.create(
-                        pkProvider.getId(),
+                        primaryIdProvider.getId(),
                         articleId,
                         userId
                 )
@@ -57,7 +57,7 @@ public class ArticleLikeService {
     {
         articleLikeRepository.save(
                 ArticleLike.create(
-                        pkProvider.getId(),
+                        primaryIdProvider.getId(),
                         articleId,
                         userId
             )
@@ -93,7 +93,7 @@ public class ArticleLikeService {
     {
         articleLikeRepository.save(
                 ArticleLike.create(
-                        pkProvider.getId(),
+                        primaryIdProvider.getId(),
                         articleId,
                         userId
                 )
@@ -126,7 +126,7 @@ public class ArticleLikeService {
     {
         articleLikeRepository.save(
                 ArticleLike.create(
-                        pkProvider.getId(),
+                        primaryIdProvider.getId(),
                         articleId,
                         userId
                 )
