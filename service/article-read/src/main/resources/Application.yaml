@@ -1,1 +1,25 @@
 server.port : 9005
+spring:
+  application:
+    name: dding-board--article-read-service
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: dding-board-article-read-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+
+endpoints:
+  dding-board-article-service:
+    url: http://127.0.0.1:9000
+  dding-board-comment-service:
+    url: http://127.0.0.1:9001
+  dding-board-like-service:
+    url: http://127.0.0.1:9002
+  dding-board-view-service:
+    url: http://127.0.0.1:9003
