@@ -11,6 +11,10 @@ import dding.board.article.dto.response.ArticlePageResponse;
 import dding.board.article.dto.response.ArticleResponse;
 import dding.board.article.repository.BoardArticleCountRepository;
 import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
+import dding.board.common.event.EventType;
+import dding.board.common.event.payload.ArticleCreatedEventPayload;
+import dding.board.common.event.payload.ArticleUpdatedEventPayload;
+import dding.board.common.outboxmessagerelay.OutboxEventPublisher;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,9 +24,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final PrimaryIdProvider primaryIdProvider;
+    private final PrimaryIdProvider primaryIdProvider = new PrimaryIdProvider();
     private final ArticleRepository articleRepository;
     private final BoardArticleCountRepository boardArticleCountRepository;
+    private final OutboxEventPublisher outboxEventPublisher;
 
 
     @Transactional
@@ -40,6 +45,20 @@ public class ArticleService {
                     BoardArticleCount.init(request.getBoardId())
             );
         }
+        outboxEventPublisher.publish(
+                EventType.ARTICLE_CREATED,
+                ArticleCreatedEventPayload.builder()
+                        .articleId(article.getArticleId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .boardId(article.getBoardId())
+                        .writerId(article.getWriterId())
+                        .createdAt(article.getCreatedAt())
+                        .modifiedAt(article.getModifiedAt())
+                        .boardArticleCount(count(article.getBoardId()))
+                        .build(),
+                article.getBoardId()//shardKey
+        );
         return ArticleResponse.form(article);
     }
 
@@ -50,6 +69,19 @@ public class ArticleService {
     {
        Article article = articleRepository.findById(articleId).orElseThrow((NotFoundArticleById::new));
        article.update(req.getTitle(), req.getContent());
+        outboxEventPublisher.publish(
+                EventType.ARTICLE_UPDATED,
+                ArticleUpdatedEventPayload.builder()
+                        .articleId(article.getArticleId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .boardId(article.getBoardId())
+                        .writerId(article.getWriterId())
+                        .createdAt(article.getCreatedAt())
+                        .modifiedAt(article.getModifiedAt())
+                        .build(),
+                article.getBoardId()//shardKey
+        );
        return ArticleResponse.form(article);
     }
 
@@ -96,6 +128,19 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId).orElseThrow();
         boardArticleCountRepository.decrease(article.getBoardId());
         articleRepository.delete(article);
+        outboxEventPublisher.publish(
+                EventType.ARTICLE_DELETED,
+                ArticleUpdatedEventPayload.builder()
+                        .articleId(article.getArticleId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .boardId(article.getBoardId())
+                        .writerId(article.getWriterId())
+                        .createdAt(article.getCreatedAt())
+                        .modifiedAt(article.getModifiedAt())
+                        .build(),
+                article.getBoardId()//shardKey
+        );
 
     }
 

@@ -14,9 +14,10 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
 
-
-
-  data:
+  date:
     redis:
-      host: 127.0.0.1
+      host: 127.0.01
       port: 6379
+
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092

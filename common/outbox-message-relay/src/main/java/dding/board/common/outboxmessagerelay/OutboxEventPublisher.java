@@ -4,7 +4,6 @@ import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
 import dding.board.common.event.Event;
 import dding.board.common.event.EventPayload;
 import dding.board.common.event.EventType;
-import dding.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OutboxEventPublisher {
-    private final PrimaryIdProvider outboxIdProvider = new PrimaryIdProvider(new Snowflake());
-    private final PrimaryIdProvider eventIdProvider = new PrimaryIdProvider(new Snowflake());
+    private final PrimaryIdProvider outboxIdProvider = new PrimaryIdProvider();
+    private final PrimaryIdProvider eventIdProvider = new PrimaryIdProvider();
     private final ApplicationEventPublisher applicationEventPublisher;
 
 

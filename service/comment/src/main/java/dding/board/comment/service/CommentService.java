@@ -21,7 +21,7 @@ import static java.util.function.Predicate.not;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ArticleCommentCountRepository articleCommentCountRepository;
-    private final PrimaryIdProvider primaryKeyProvider;
+    private final PrimaryIdProvider primaryKeyProvider = new PrimaryIdProvider();
 
 
 

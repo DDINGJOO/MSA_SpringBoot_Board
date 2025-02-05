@@ -3,9 +3,8 @@ package dding.board.common.PrimaryKeyProvider;
 import dding.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class PrimaryIdProvider {
-    private final Snowflake snowflake;
+    private final Snowflake snowflake = new Snowflake();
 
 
     public  long getId()

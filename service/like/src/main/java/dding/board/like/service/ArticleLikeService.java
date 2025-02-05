@@ -1,6 +1,10 @@
 package dding.board.like.service;
 
 import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
+import dding.board.common.event.EventType;
+import dding.board.common.event.payload.ArticleLikedEventPayload;
+import dding.board.common.event.payload.ArticleUnlikedEventPayload;
+import dding.board.common.outboxmessagerelay.OutboxEventPublisher;
 import dding.board.like.dto.Response.ArticleLikeResponse;
 import dding.board.like.entity.ArticleLike;
 import dding.board.like.entity.ArticleLikeCount;
@@ -14,9 +18,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticleLikeService {
 
-    private final PrimaryIdProvider primaryIdProvider;
+    private final PrimaryIdProvider primaryIdProvider = new PrimaryIdProvider();
     private final ArticleLikeRepository articleLikeRepository;
     private  final ArticleLikeCountRepository articleLikeCountRepository;
+    private final OutboxEventPublisher outboxEventPublisher;
 
 
     public ArticleLikeResponse read(Long articleId, Long userId)
@@ -39,6 +44,7 @@ public class ArticleLikeService {
                         userId
                 )
         );
+
     }
 
     @Transactional
@@ -55,7 +61,7 @@ public class ArticleLikeService {
     @Transactional
     public void likePessimisticLock1(Long articleId, Long userId)
     {
-        articleLikeRepository.save(
+        ArticleLike articleLike = articleLikeRepository.save(
                 ArticleLike.create(
                         primaryIdProvider.getId(),
                         articleId,
@@ -72,6 +78,18 @@ public class ArticleLikeService {
             );
         }
 
+        outboxEventPublisher.publish(
+                EventType.ARTICLE_LIKED,
+                ArticleLikedEventPayload.builder()
+                        .articleLikeId(articleLike.getArticleLikeId())
+                        .articleId(articleLike.getArticleId())
+                        .articleLikeCount(count(articleId))
+                        .createdAt(articleLike.getCreatedAt())
+                        .userId(articleLike.getUserId())
+                        .build(),
+                articleLike.getArticleId()//shardKey
+        );
+
 
     }
 
@@ -82,7 +100,20 @@ public class ArticleLikeService {
                 .ifPresent(articleLike -> {
                     articleLikeRepository.delete(articleLike);
                     articleLikeCountRepository.decrease(articleId);
+                    outboxEventPublisher.publish(
+                            EventType.ARTICLE_UNLIKED,
+                            ArticleUnlikedEventPayload.builder()
+                                    .articleLikeId(articleLike.getArticleLikeId())
+                                    .articleId(articleLike.getArticleId())
+                                    .articleLikeCount(count(articleId))
+                                    .createdAt(articleLike.getCreatedAt())
+                                    .userId(articleLike.getUserId())
+                                    .build(),
+                            articleLike.getArticleId()//shardKey
+                    );
                 } );
+
+
     }
 
     /**
