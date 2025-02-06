@@ -1,7 +1,9 @@
 package dding.board.articleread.service.event.handler;
 
 
+import dding.board.articleread.repository.ArticleIdListRepository;
 import dding.board.articleread.repository.ArticleQueryModelRepository;
+import dding.board.articleread.repository.BoardArticleCountRepository;
 import dding.board.common.event.Event;
 import dding.board.common.event.EventType;
 import dding.board.common.event.payload.ArticleDeletedEventPayload;
@@ -13,13 +15,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ArticleDeletedEventHandler implements EventHandler<ArticleDeletedEventPayload> {
     private final ArticleQueryModelRepository articleQueryModelRepository;
+    private final ArticleIdListRepository articleIdListRepository;
+    private final BoardArticleCountRepository boardArticleCountRepository;
 
 
     @Override
     public void handle(Event<ArticleDeletedEventPayload> event) {
         ArticleDeletedEventPayload  payload = event.getPayload();
+        articleIdListRepository.delete(payload.getBoardId(), payload.getArticleId());
+        boardArticleCountRepository.createOrUpdate(payload.getBoardId(),payload.getBoardArticleCount());
         articleQueryModelRepository.delete(payload.getArticleId());
-
     }
 
     @Override
