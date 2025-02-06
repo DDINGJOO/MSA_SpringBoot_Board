@@ -17,8 +17,7 @@ import java.util.Optional;
 public class CommentClient {
 
     private RestClient restClient;
-
-    @Value("${endpoint.dding-board-comment-service-url}")
+    @Value("${endpoints.dding-board-comment-service.url}")
     private String commentServiceUrl;
 
 

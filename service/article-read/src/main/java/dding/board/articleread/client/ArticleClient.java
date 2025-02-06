@@ -23,7 +23,7 @@ public class ArticleClient {
 
     private RestClient restClient;
 
-    @Value("${endpoint.dding-board-article-service-url}")
+    @Value("${endpoints.dding-board-article-service.url}")
     private String articleServiceUrl;
 
 

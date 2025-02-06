@@ -14,7 +14,7 @@ public class LikeClient {
 
     private RestClient restClient;
 
-    @Value("${endpoint.dding-board-like-service-url}")
+    @Value("${endpoints.dding-board-like-service.url}")
     private String likeServiceUrl;
 
 

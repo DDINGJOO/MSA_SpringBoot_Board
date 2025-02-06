@@ -15,7 +15,7 @@ public class ViewClient {
 
     private RestClient restClient;
 
-    @Value("${endpoint.dding-board-view-service-url}")
+    @Value("${endpoints.dding-board-view-service.url}")
     private String viewServiceClientUrl;
 
 
@@ -26,20 +26,19 @@ public class ViewClient {
     }
 
 
-    @Cacheable(key ="#articleId", value = "articleViewCount")
-    public Long count(Long articleId)
-    {
+    @Cacheable(key ="#articleId ?: -1", value = "articleViewCount")
+    public Long count(Long articleId) {
 
-        log.info("[ViewClient.count] articleId[] ={}", articleId);
+        log.info("[ViewClient.count] articleId ={}", articleId);
         try{
             return  restClient.get()
-                    .uri("/v1/article-views/articles/{articleId}/count",articleId)
+                    .uri("/v1/article-views/articles/{articleId}/count", articleId)
                     .retrieve()
                     .body(Long.class);
         }catch (Exception e)
         {
             log.error("[ViewClient.count] articleId = {} ",articleId,e);
-            return  0L;
+            return 0L;
         }
     }
 }
