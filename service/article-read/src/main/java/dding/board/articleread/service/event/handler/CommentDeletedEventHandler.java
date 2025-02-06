@@ -1,10 +1,9 @@
 package dding.board.articleread.service.event.handler;
 
 import dding.board.articleread.repository.ArticleQueryModelRepository;
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.CommentCreatedEventPayload;
-import dding.board.common.event.payload.CommentDeletedEventPayload;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.CommentDeletedEventPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

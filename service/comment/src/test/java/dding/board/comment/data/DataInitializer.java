@@ -2,7 +2,7 @@ package dding.board.comment.data;
 
 
 import dding.board.comment.entity.Comment;
-import dding.board.common.snowflake.Snowflake;
+import dding.board.board.snowflake.Snowflake;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;

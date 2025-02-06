@@ -2,9 +2,9 @@ package dding.board.articleread.consumer;
 
 
 import dding.board.articleread.service.ArticleReadService;
-import dding.board.common.event.Event;
-import dding.board.common.event.EventPayload;
-import dding.board.common.event.EventType;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventPayload;
+import dding.board.board.event.EventType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

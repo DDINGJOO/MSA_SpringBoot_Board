@@ -1,9 +1,9 @@
 package dding.board.view.service;
 
 
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.ArticleViewedEventPayload;
-import dding.board.common.outboxmessagerelay.OutboxEventPublisher;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.ArticleViewedEventPayload;
+import dding.board.board.outboxmessagerelay.OutboxEventPublisher;
 import dding.board.view.repository.ArticleViewCountRepository;
 import dding.board.view.repository.ArticleViewDistributedLockRepository;
 import lombok.RequiredArgsConstructor;

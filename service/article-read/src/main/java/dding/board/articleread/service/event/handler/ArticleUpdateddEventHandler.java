@@ -1,16 +1,12 @@
 package dding.board.articleread.service.event.handler;
 
 
-import dding.board.articleread.repository.ArticleQueryModel;
 import dding.board.articleread.repository.ArticleQueryModelRepository;
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.ArticleCreatedEventPayload;
-import dding.board.common.event.payload.ArticleUpdatedEventPayload;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.ArticleUpdatedEventPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
 
 @Component
 @RequiredArgsConstructor

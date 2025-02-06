@@ -1,7 +1,7 @@
 package dding.board.article.data;
 
 import dding.board.article.entity.Article;
-import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
+import dding.board.board.PrimaryKeyProvider.PrimaryIdProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;

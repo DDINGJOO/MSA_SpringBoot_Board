@@ -1,12 +1,11 @@
 package dding.board.articleread.repository;
 
 
-import dding.board.common.dataserializer.DataSerializer;
+import dding.board.board.dataserializer.DataSerializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;

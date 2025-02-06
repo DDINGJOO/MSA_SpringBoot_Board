@@ -1,8 +1,8 @@
 package dding.board.hotarticle.service.eventHandler;
 
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.ArticleLikedEventPayload;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.ArticleLikedEventPayload;
 import dding.board.hotarticle.repository.ArticleLikeCountRepository;
 import dding.board.hotarticle.utils.TimeCalculatorUtils;
 import lombok.RequiredArgsConstructor;

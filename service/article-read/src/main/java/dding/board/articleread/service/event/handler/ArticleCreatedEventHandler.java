@@ -5,10 +5,9 @@ import dding.board.articleread.repository.ArticleIdListRepository;
 import dding.board.articleread.repository.ArticleQueryModel;
 import dding.board.articleread.repository.ArticleQueryModelRepository;
 import dding.board.articleread.repository.BoardArticleCountRepository;
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.ArticleCreatedEventPayload;
-import io.lettuce.core.dynamic.annotation.CommandNaming;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.ArticleCreatedEventPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
 package dding.board.hotarticle.consumer;
 
-import dding.board.common.event.Event;
-import dding.board.common.event.EventPayload;
-import dding.board.common.event.EventType;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventPayload;
+import dding.board.board.event.EventType;
 import dding.board.hotarticle.service.HotArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

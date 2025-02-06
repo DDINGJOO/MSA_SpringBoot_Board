@@ -2,7 +2,7 @@ package dding.board.articleread.repository;
 
 
 import dding.board.articleread.client.ArticleClient;
-import dding.board.common.event.payload.*;
+import dding.board.board.event.payload.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

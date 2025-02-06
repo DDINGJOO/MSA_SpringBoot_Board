@@ -1,10 +1,10 @@
 package dding.board.like.service;
 
-import dding.board.common.PrimaryKeyProvider.PrimaryIdProvider;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.ArticleLikedEventPayload;
-import dding.board.common.event.payload.ArticleUnlikedEventPayload;
-import dding.board.common.outboxmessagerelay.OutboxEventPublisher;
+import dding.board.board.PrimaryKeyProvider.PrimaryIdProvider;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.ArticleLikedEventPayload;
+import dding.board.board.event.payload.ArticleUnlikedEventPayload;
+import dding.board.board.outboxmessagerelay.OutboxEventPublisher;
 import dding.board.like.dto.Response.ArticleLikeResponse;
 import dding.board.like.entity.ArticleLike;
 import dding.board.like.entity.ArticleLikeCount;

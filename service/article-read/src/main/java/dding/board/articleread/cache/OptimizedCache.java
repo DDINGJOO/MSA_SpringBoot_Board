@@ -1,13 +1,12 @@
 package dding.board.articleread.cache;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dding.board.common.dataserializer.DataSerializer;
+import dding.board.board.dataserializer.DataSerializer;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @ToString
 @Getter

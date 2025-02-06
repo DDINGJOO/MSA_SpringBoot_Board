@@ -1,15 +1,13 @@
 package dding.board.articleread.cache;
 
 
-import dding.board.common.dataserializer.DataSerializer;
+import dding.board.board.dataserializer.DataSerializer;
 import io.lettuce.core.dynamic.annotation.CommandNaming;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
-import static org.apache.naming.SelectorContext.prefix;
 
 @CommandNaming
 @RequiredArgsConstructor

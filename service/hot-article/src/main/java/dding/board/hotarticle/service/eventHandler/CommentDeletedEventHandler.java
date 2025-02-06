@@ -1,8 +1,8 @@
 package dding.board.hotarticle.service.eventHandler;
 
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
-import dding.board.common.event.payload.CommentDeletedEventPayload;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
+import dding.board.board.event.payload.CommentDeletedEventPayload;
 import dding.board.hotarticle.repository.ArticleCommentCountRepository;
 import dding.board.hotarticle.utils.TimeCalculatorUtils;
 import lombok.RequiredArgsConstructor;

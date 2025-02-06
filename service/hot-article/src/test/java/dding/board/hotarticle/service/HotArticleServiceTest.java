@@ -1,7 +1,7 @@
 package dding.board.hotarticle.service;
 
-import dding.board.common.event.Event;
-import dding.board.common.event.EventType;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventType;
 import dding.board.hotarticle.service.eventHandler.EventHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 import static org.mockito.BDDMockito.given;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 

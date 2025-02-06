@@ -1,8 +1,8 @@
 package dding.board.hotarticle.service;
 
 
-import dding.board.common.event.Event;
-import dding.board.common.event.EventPayload;
+import dding.board.board.event.Event;
+import dding.board.board.event.EventPayload;
 import dding.board.hotarticle.repository.ArticleCreatedTimeRepository;
 import dding.board.hotarticle.repository.HotArticleListRepository;
 import dding.board.hotarticle.service.eventHandler.EventHandler;
