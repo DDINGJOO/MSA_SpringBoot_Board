@@ -67,7 +67,7 @@ public class ArticleService {
     @Transactional
     public ArticleResponse update(Long articleId,ArticleUpdateRequest req)
     {
-       Article article = articleRepository.findById(articleId).orElseThrow((NotFoundArticleById::new));
+       Article article = articleRepository.findById(articleId).orElseThrow();
        article.update(req.getTitle(), req.getContent());
         outboxEventPublisher.publish(
                 EventType.ARTICLE_UPDATED,

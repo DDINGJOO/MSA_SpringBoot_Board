@@ -72,7 +72,12 @@ public class ArticleReadService {
 
 
 
-
+    public List<ArticleReadResponse> readAllInfiniteScroll(Long boardId, Long lastArticleId, Long pageSize)
+    {
+        return readAll(
+                readAllInfiniteScrollIds(boardId, lastArticleId,pageSize)
+        );
+    }
 
 
     private List<Long> readAllInfiniteScrollIds(Long boardId, Long lastArticleId, Long pageSize) {
@@ -140,12 +145,7 @@ public class ArticleReadService {
         return count;
     }
 
-    public List<ArticleReadResponse> readAllInfiniteScroll(Long boardId, Long lastArticleId, Long pageSize)
-    {
-        return readAll(
-                readAllInfiniteScrollIds(boardId, lastArticleId,pageSize)
-        );
-    }
+
 
 
 

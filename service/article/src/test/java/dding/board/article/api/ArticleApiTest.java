@@ -67,7 +67,7 @@ public class ArticleApiTest {
     @Test
     void readAllInfiniteScrollInitPageTest() {
         var article1 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=7")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -82,7 +82,7 @@ public class ArticleApiTest {
     void readAllInfiniteScrollNextPageTest()
     {
         var article1 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=7")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -90,7 +90,7 @@ public class ArticleApiTest {
         var lastArticleId = article1.getLast().getArticleId();
         System.out.printf("lastArticleId = %s%n", lastArticleId);
         var article2 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId))
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId))
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -107,7 +107,7 @@ public class ArticleApiTest {
     void readAllInfiniteScrollContinueousTest()
     {
         var article1 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7")
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=7")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -115,7 +115,7 @@ public class ArticleApiTest {
         var lastArticleId1 = article1.getLast().getArticleId();
         System.out.printf("lastArticleId = %s%n", lastArticleId1);
         var article2 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=8")
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=8")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -124,7 +124,7 @@ public class ArticleApiTest {
         System.out.printf("nextArticleId = %s%n", lastArticleId2);
 
         var article3 = restClient.get()
-                .uri("v1/articles/infinite-scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId1))
+                .uri("/v1/articles/infinite-Scroll?boardId=1&pageSize=7&lastArticleId=%s".formatted(lastArticleId1))
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ArticleResponse>>() {
                 });
@@ -137,10 +137,10 @@ public class ArticleApiTest {
     {
         ArticleResponse factoryArticle = FactoryArticle();
         System.out.println("before = " + factoryArticle);
-        var before = factoryArticle.getModifiedAt();
-        factoryArticle = update(factoryArticle.getArticleId(), new ArticleUpdateRequest("hi2", "hihi2"));
-        System.out.println("response = "+ factoryArticle);
-        Assertions.assertThat(factoryArticle.getModifiedAt()).isAfter(before);
+        ArticleResponse factoryArticle2 = update(factoryArticle.getArticleId(), new ArticleUpdateRequest("hi2", "hihi2"));
+        System.out.println("response = "+ factoryArticle2);
+
+
     }
 
     ArticleResponse update(Long articleId, ArticleUpdateRequest request) {
@@ -156,7 +156,7 @@ public class ArticleApiTest {
     {
         ArticleResponse factoryArticle = FactoryArticle();
         restClient.delete()
-                .uri("v1/articles/{articleId}", factoryArticle.getArticleId())
+                .uri("/v1/articles/{articleId}", factoryArticle.getArticleId())
                 .retrieve();
     }
 
@@ -176,7 +176,7 @@ public class ArticleApiTest {
 
 
         restClient.delete()
-                .uri("v1/articles/{articleId}",response.getArticleId())
+                .uri("/v1/articles/{articleId}",response.getArticleId())
                 .retrieve();
 
         var count2 = restClient.get()

@@ -26,7 +26,7 @@ public class ArticleReadController {
         return articleReadService.read(articleId);
     }
 
-    @GetMapping("/v1/artilces")
+    @GetMapping("/v1/articles")
     public ArticleReadPageResponse readAll(
             @RequestParam("boardId") Long boardId,
             @RequestParam("page") Long page,
@@ -36,7 +36,7 @@ public class ArticleReadController {
         return articleReadService.readAll(boardId,page,pageSize);
     }
 
-    @GetMapping("/v1/artilces/infinite-Scroll")
+    @GetMapping("/v1/articles/infinite-Scroll")
     public List<ArticleReadResponse> readAllInfiniteScroll(
             @RequestParam("boardId") Long boardId,
             @RequestParam(value = "lastArticleId",required = false) Long lastArticleId,
