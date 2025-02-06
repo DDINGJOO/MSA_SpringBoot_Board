@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestClient;
 
+import java.time.LocalDateTime;
 import java.util.random.RandomGenerator;
 
 public class DataInitializer {
@@ -85,6 +86,8 @@ public class DataInitializer {
     @Getter
     static class ArticleResponse{
         private Long articleId;
+        private String title;
+        private LocalDateTime createdAt;
     }
 
     @Getter
