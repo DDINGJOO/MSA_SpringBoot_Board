@@ -72,7 +72,27 @@ public class ArticleReadService {
 
 
 
-    private List<ArticleReadResponse> readAll(List<Long> articleIds)
+
+
+
+    private List<Long> readAllInfiniteScrollIds(Long boardId, Long lastArticleId, Long pageSize) {
+
+        List<Long> articleIds = articleIdListRepository.readAllInfiniteScroll(boardId,lastArticleId,pageSize);
+        if(pageSize == articleIds.size()){
+            log.info("[ArticleReadService.readAllInfiniteScrollIdsArticleIds] return from redis database");
+            return articleIds;
+        }
+
+        log.info("[ArticleReadService.readAllInfiniteScrollIdsArticleIds] return from origin database");
+        return articleClient.readAllInfiniteScroll(boardId,lastArticleId,pageSize).stream()
+                .map(ArticleClient.ArticleResponse::getArticleId)
+                .toList();
+
+    }
+
+
+
+    public List<ArticleReadResponse> readAll(List<Long> articleIds)
     {
         Map<Long, ArticleQueryModel> articleQueryModelMap =  articleQueryModelRepository.readAll(articleIds);
         return articleIds.stream()
@@ -86,6 +106,13 @@ public class ArticleReadService {
                                 viewClient.count(articleQueryModel.getArticleId())
                         )).toList();
     }
+
+
+
+
+
+
+
     private List<Long> readAllArticleIds(Long boardId, Long page, Long pageSize)
     {
         List<Long> articleIds = articleIdListRepository.readAll(boardId, (page-1)*pageSize, pageSize);
@@ -113,27 +140,14 @@ public class ArticleReadService {
         return count;
     }
 
-    private List<ArticleReadResponse> readAllInfiniteScroll(Long boardId, Long lastArticleId, Long pageSize)
+    public List<ArticleReadResponse> readAllInfiniteScroll(Long boardId, Long lastArticleId, Long pageSize)
     {
         return readAll(
                 readAllInfiniteScrollIds(boardId, lastArticleId,pageSize)
         );
     }
 
-    private List<Long> readAllInfiniteScrollIds(Long boardId, Long lastArticleId, Long pageSize) {
 
-        List<Long> articleIds = articleIdListRepository.readAllInfiniteScroll(boardId,lastArticleId,pageSize);
-        if(pageSize == articleIds.size()){
-            log.info("[ArticleReadService.readAllInfiniteScrollIdsArticleIds] return from redis database");
-            return articleIds;
-        }
-
-        log.info("[ArticleReadService.readAllInfiniteScrollIdsArticleIds] return from origin database");
-        return articleClient.readAllInfiniteScroll(boardId,lastArticleId,pageSize).stream()
-                .map(ArticleClient.ArticleResponse::getArticleId)
-                .toList();
-
-    }
 
 
     private  Optional<ArticleQueryModel> fetch(Long articleId) {
