@@ -1,5 +1,6 @@
 package dding.board.articleread.client;
 
+import dding.board.articleread.cache.OptimizedCacheable;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,8 @@ public class ViewClient {
     }
 
 
-    @Cacheable(key ="#articleId ?: -1", value = "articleViewCount")
+    //@Cacheable(key ="#articleId ?: -1", value = "articleViewCount")
+    @OptimizedCacheable(type = "articleViewCount", ttlSeconds = 1)
     public Long count(Long articleId) {
 
         log.info("[ViewClient.count] articleId ={}", articleId);
