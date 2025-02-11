@@ -17,8 +17,7 @@ public class OptimizedCacheLockProvider {
     private static final String KEY_PREFIX = "optimized-cache-lock::";
     private static final Duration LOCK_TTL = Duration.ofSeconds(3);
 
-    public boolean lock(String key)
-    {
+    public boolean lock(String key) {
         return redisTemplate.opsForValue().setIfAbsent(
                 generateLockKey(key),
                 "",
@@ -26,13 +25,11 @@ public class OptimizedCacheLockProvider {
         );
     }
 
-    public void unLock(String key){
+    public void unlock(String key) {
         redisTemplate.delete(generateLockKey(key));
-
     }
 
-    private String generateLockKey(String key)
-    {
-        return KEY_PREFIX +key;
+    private String generateLockKey(String key) {
+        return KEY_PREFIX + key;
     }
 }

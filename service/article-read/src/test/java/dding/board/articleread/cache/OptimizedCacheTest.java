@@ -29,7 +29,7 @@ class OptimizedCacheTest {
 
 
         //when
-        Object resolveData = optimizedCache.parseDate(data.getClass());
+        Object resolveData = optimizedCache.parseData(data.getClass());
 
         //then
         System.out.println("resolvedData = " +resolveData);

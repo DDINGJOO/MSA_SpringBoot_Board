@@ -19,15 +19,18 @@ import java.time.LocalDateTime;
 public class Board {
     @Id
     private Long boardId;
-
     private String title;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+    private Long writerId;
 
-    public static Board create(Long boardId, String title){
+    public static Board create(Long boardId, String title, Long writerId){
         Board board = new Board();
         board.boardId = boardId;
         board.title = title;
+        board.writerId =writerId;
         board.createdAt = LocalDateTime.now();
+        board.modifiedAt = LocalDateTime.now();
         return board;
     }
 }
