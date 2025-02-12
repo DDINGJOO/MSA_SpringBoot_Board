@@ -8,9 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    Board findByName(String name);
-    Board findByBoardId(Long boardId);
-    Board findByTitle(String title);
-
-    
 }
