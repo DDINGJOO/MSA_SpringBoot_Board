@@ -20,17 +20,30 @@ public class Board {
     @Id
     private Long boardId;
     private String title;
+    private Long parentBoardId;
+    private Boolean deleted;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Long writerId;
 
-    public static Board create(Long boardId, String title, Long writerId){
+    public static Board create(Long boardId, Long parentBoardId, String title, Long writerId){
         Board board = new Board();
         board.boardId = boardId;
         board.title = title;
         board.writerId =writerId;
+        board.parentBoardId = parentBoardId == null ? boardId : parentBoardId;
+        board.deleted = false;
         board.createdAt = LocalDateTime.now();
         board.modifiedAt = LocalDateTime.now();
         return board;
+    }
+
+    public Boolean isRoot()
+    {
+        return parentBoardId.longValue() == boardId;
+    }
+
+    public void delete(){
+        deleted = true;
     }
 }

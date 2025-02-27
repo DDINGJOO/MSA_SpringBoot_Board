@@ -27,7 +27,7 @@ public class BoardController {
         return boardService.read(boardId);
     }
 
-    @DeleteMapping("/v1/boards/{boardId")
+    @DeleteMapping("/v1/boards/{boardId}")
     public void delete(@PathParam("boardId") Long boardId)
     {
         boardService.delete(boardId);

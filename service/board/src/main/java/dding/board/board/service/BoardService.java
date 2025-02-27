@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static java.util.function.Predicate.not;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,9 +27,11 @@ public class BoardService {
     @Transactional
     public BoardResponse create(BoardCreateRequest req)
     {
+        Board parent = findParent(req);
         Board board = boardRepository.save(
                 Board.create(
                         primaryIdProvider.getId(),
+                        parent == null ? null : parent.getBoardId(),
                         req.getTitle(),
                         req.getWriterId()
                 )
@@ -44,6 +48,20 @@ public class BoardService {
     public void delete(Long boardId)
     {
         boardRepository.deleteById(boardId);
+    }
+
+
+    private Board findParent(BoardCreateRequest req)
+    {
+        var parentBoardId = req.getParentBoardId();
+        if(parentBoardId == null)
+        {
+            return null;
+        }
+        return  boardRepository.findById(parentBoardId)
+                .filter(not(Board::getDeleted))
+                .filter(Board::isRoot)
+                .orElseThrow();
     }
 
 
